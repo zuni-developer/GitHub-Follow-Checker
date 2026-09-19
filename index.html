@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Check who doesn't follow you back on GitHub. Runs entirely in your browser, no data stored.">
+<meta name="color-scheme" content="light dark">
+<title>GitHub Follow Checker</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛰️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<div class="bg-blobs"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
+
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="brand-mark">🛰️</span> GitHub Follow Checker</div>
+    <div class="header-controls">
+      <span class="pill hidden" id="rateLimitPill"><span class="dot"></span><span id="rateLimitText"></span></span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
+        <span id="themeIcon" aria-hidden="true">🌙</span><span id="themeLabel">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>See who isn't following you back</h1>
+    <p>Enter a GitHub username to compare followers and following. Nothing is stored, every request goes straight from your browser to GitHub.</p>
+
+    <div class="glass search-card">
+      <div class="field">
+        <label for="username">GitHub username</label>
+        <input type="text" id="username" placeholder="octocat" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="39" aria-describedby="usernameError">
+        <div class="field-error" id="usernameError" role="alert"></div>
+      </div>
+
+      <details class="advanced">
+        <summary>Have a lot of followers, or hitting rate limits? Add a token</summary>
+        <div class="field">
+          <label for="token">Personal access token (optional)</label>
+          <input type="password" id="token" placeholder="ghp_..." autocomplete="off">
+          <p class="token-help">
+            Used only for this check, sent directly to GitHub, and never saved or sent anywhere else.
+            A token with <strong>no scopes selected</strong> (or fine-grained, read-only) is enough, this tool
+            never writes anything to your account. <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer">Create one on GitHub →</a>
+          </p>
+        </div>
+      </details>
+
+      <button class="btn" id="checkBtn">Check follow-back status</button>
+      <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="glass gate" id="gate">
+      <span class="star-icon" aria-hidden="true">⭐</span>
+      <h3>One quick favor first</h3>
+      <p>This tool is free to use, the only ask is a star on the repo it's built from.</p>
+      <div class="gate-actions">
+        <a class="btn" style="width:auto; display:inline-block; text-decoration:none;" href="https://github.com/zuni-developer/GitHub-Follow-Checker" target="_blank" rel="noopener noreferrer">⭐ Star the repo</a>
+        <button class="btn btn-secondary" id="recheckStarBtn">I've starred it! check again</button>
+      </div>
+      <div class="status-line" id="gateStatus" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="results" id="results" aria-label="Results">
+    <div class="stat-strip">
+      <div class="glass stat-card accent-sky"><span class="num" id="statFollowers">0</span><span class="label">Followers</span></div>
+      <div class="glass stat-card accent-sky"><span class="num" id="statFollowing">0</span><span class="label">Following</span></div>
+      <div class="glass stat-card accent-coral"><span class="num" id="statNotBack">0</span><span class="label">Not following back</span></div>
+      <div class="glass stat-card accent-teal"><span class="num" id="statFans">0</span><span class="label">Fans you don't follow</span></div>
+    </div>
+
+    <div class="toolbar">
+      <input type="search" id="searchBox" placeholder="Filter by username…" aria-label="Filter results by username">
+      <div role="group" aria-label="Filter category" style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="filter-chip" data-filter="not-back" aria-pressed="true">Not following back</button>
+        <button class="filter-chip" data-filter="fans" aria-pressed="false">Fans</button>
+        <button class="filter-chip" data-filter="mutual" aria-pressed="false">Mutual</button>
+      </div>
+    </div>
+    <div class="toolbar-row2">
+      <span class="result-count" id="resultCount" aria-live="polite"></span>
+      <div class="toolbar-actions">
+        <button class="btn-secondary btn-icon glass" id="sortBtn" type="button">A–Z ↓</button>
+        <button class="btn-secondary btn-icon glass" id="exportBtn" type="button">⬇ Export CSV</button>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <div class="empty-state" id="emptyState" style="display:none;"></div>
+  </section>
+
+  <footer>
+    <p>Made by <a href="https://github.com/zuni-developer" target="_blank" rel="noopener noreferrer">Zuni-Developer</a>
+  </footer>
+</div>
+
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

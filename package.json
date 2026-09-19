@@ -1,0 +1,15 @@
+{
+  "name": "github-follow-checker",
+  "version": "1.0.0",
+  "description": "See who doesn't follow you back on GitHub. Static, client-only, no backend.",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes serve . -l 5173",
+    "dev": "npx --yes serve . -l 5173"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/github-follow-checker.git"
+  }
+}
