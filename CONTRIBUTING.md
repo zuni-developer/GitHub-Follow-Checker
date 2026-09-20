@@ -4,12 +4,12 @@ This project does not accept pull requests. All code changes are made by the mai
 That's a deliberate choice, not a lack of gratitude:
 
 - It's a small, security-sensitive, dependency-free static app (see
-  [Security-sensitive areas](#security-sensitive-areas) below) — the whole point is that anyone
+  [Security-sensitive areas](#security-sensitive-areas) below), the whole point is that anyone
   can open `index.html`, read it top to bottom, and trust it. Keeping a single author keeps that
   guarantee simple to reason about.
 - It keeps review load manageable for a one-person project.
 
-You're still very welcome to help by reporting bugs and requesting features — that's the most
+You're still very welcome to help by reporting bugs and requesting features, that's the most
 useful contribution you can make here, and it's genuinely wanted.
 
 ## How to help
@@ -17,13 +17,11 @@ useful contribution you can make here, and it's genuinely wanted.
 - **Found a bug?** [Open an issue](../../issues/new/choose) using the Bug Report template.
 - **Have an idea or a feature request?** [Open an issue](../../issues/new/choose) using the
   Feature Request template.
-- **Found an actual security vulnerability?** Don't open a public issue — see
+- **Found an actual security vulnerability?** Don't open a public issue, see
   [SECURITY.md](SECURITY.md) for how to report it privately.
-- Please be respectful — see the [Code of Conduct](CODE_OF_CONDUCT.md).
+- Please be respectful, see the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-Pull requests, forks submitted as PRs, and unsolicited patches will be closed without review. If
-you fork the project to make your own changes for yourself, that's fine and welcome under the
-[license](LICENSE) — just know it won't be merged back here.
+Pull requests, forks submitted as PRs, and unsolicited patches will be closed without review. 
 
 ## Writing a good issue
 
@@ -32,7 +30,7 @@ A good bug report or feature request gets acted on much faster. Please include:
 - What you expected to happen vs. what actually happened
 - Steps to reproduce (for bugs), including the browser/engine used
 - Whether the issue happens with an unauthenticated check, a rate-limit token, or the unfollow
-  flow (see [Security-sensitive areas](#security-sensitive-areas) — problems here get priority)
+  flow (see [Security-sensitive areas](#security-sensitive-areas), problems here get priority)
 - Console errors, if any (F12 → Console)
 
 ## Project structure
