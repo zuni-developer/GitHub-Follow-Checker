@@ -1,0 +1,39 @@
+name: Close pull requests
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  close-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment and close
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pr_number = context.payload.pull_request.number;
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: pr_number,
+              body:
+                "Thanks for taking the time, but this project doesn't accept pull requests — " +
+                "see [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md) for why.\n\n" +
+                "If this fixes a bug or suggests an improvement, please " +
+                "[open an issue](../../issues/new/choose) describing it instead — that's the " +
+                "part that's genuinely useful to this project. Closing this PR now.",
+            });
+
+            await github.rest.pulls.update({
+              owner,
+              repo,
+              pull_number: pr_number,
+              state: "closed",
+            });

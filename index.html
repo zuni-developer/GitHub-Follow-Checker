@@ -20,7 +20,10 @@
   <header>
     <div class="brand"><span class="brand-mark">🛰️</span> GitHub Follow Checker</div>
     <div class="header-controls">
-      <span class="pill hidden" id="rateLimitPill"><span class="dot"></span><span id="rateLimitText"></span></span>
+      <span class="pill auth-pill hidden" id="authPill">
+        <span class="dot"></span><span id="authPillText"></span>
+        <button type="button" id="authPillClear" aria-label="Remove token">×</button>
+      </span>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
         <span id="themeIcon" aria-hidden="true">🌙</span><span id="themeLabel">Dark</span>
       </button>
@@ -38,30 +41,37 @@
         <div class="field-error" id="usernameError" role="alert"></div>
       </div>
 
-      <details class="advanced">
-        <summary>Have a lot of followers, or hitting rate limits? Add a token</summary>
-        <div class="field">
-          <label for="token">Personal access token (optional)</label>
-          <input type="password" id="token" placeholder="ghp_..." autocomplete="off">
-          <p class="token-help">
-            Used only for this check, sent directly to GitHub, and never saved or sent anywhere else.
-            A token with <strong>no scopes selected</strong> (or fine-grained, read-only) is enough, this tool
-            never writes anything to your account. <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer">Create one on GitHub →</a>
-          </p>
-        </div>
-      </details>
-
       <button class="btn" id="checkBtn">Check follow-back status</button>
+      <p class="token-note">No login needed. You'll only be asked for an optional token if GitHub's public rate limit is hit.</p>
       <div class="status-line" id="statusLine" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="glass token-prompt" id="tokenPrompt" hidden>
+      <h3>GitHub's public rate limit was hit</h3>
+      <p id="tokenPromptMessage">Unauthenticated requests are capped at 60/hour. Adding a personal access token raises that to 5,000/hour, used only for this session, never stored.</p>
+      <div class="field">
+        <label for="reactiveTokenInput">Personal access token</label>
+        <input type="password" id="reactiveTokenInput" placeholder="ghp_..." autocomplete="off">
+      </div>
+      <p class="token-note" id="tokenScopeHint">
+        A token with <strong>no scopes selected</strong> (classic) or a read-only fine-grained token is enough to check follow status.
+        <a id="tokenCreateLink" href="https://github.com/settings/tokens/new?description=GitHub+Follow+Checker&scopes=" target="_blank" rel="noopener noreferrer">Create one on GitHub →</a>
+      </p>
+      <div class="gate-actions">
+        <button class="btn" id="tokenSubmitBtn">Save token &amp; retry</button>
+        <button class="btn btn-secondary" id="tokenCancelBtn">Cancel</button>
+      </div>
+      <div class="status-line" id="tokenPromptStatus" role="status" aria-live="polite"></div>
     </div>
 
     <div class="glass gate" id="gate">
       <span class="star-icon" aria-hidden="true">⭐</span>
       <h3>One quick favor first</h3>
-      <p>This tool is free to use, the only ask is a star on the repo it's built from.</p>
+      <p>This tool is free to use, the only ask is a star on the repo it's built from.
+         Star it, then come back and check again.</p>
       <div class="gate-actions">
         <a class="btn" style="width:auto; display:inline-block; text-decoration:none;" href="https://github.com/zuni-developer/GitHub-Follow-Checker" target="_blank" rel="noopener noreferrer">⭐ Star the repo</a>
-        <button class="btn btn-secondary" id="recheckStarBtn">I've starred it! check again</button>
+        <button class="btn btn-secondary" id="recheckStarBtn">I've starred it, check again</button>
       </div>
       <div class="status-line" id="gateStatus" role="status" aria-live="polite"></div>
     </div>
@@ -74,6 +84,8 @@
       <div class="glass stat-card accent-coral"><span class="num" id="statNotBack">0</span><span class="label">Not following back</span></div>
       <div class="glass stat-card accent-teal"><span class="num" id="statFans">0</span><span class="label">Fans you don't follow</span></div>
     </div>
+
+    <div class="truncation-note" id="truncationNote" hidden></div>
 
     <div class="toolbar">
       <input type="search" id="searchBox" placeholder="Filter by username…" aria-label="Filter results by username">
@@ -91,12 +103,38 @@
       </div>
     </div>
 
+    <div class="glass unfollow-banner" id="unfollowBanner" hidden>
+      <span>🧹 Want to clean these up?</span>
+      <button class="btn-secondary btn-icon" id="openUnfollowBtn" type="button">Review &amp; unfollow</button>
+    </div>
+
     <div class="grid" id="grid"></div>
     <div class="empty-state" id="emptyState" style="display:none;"></div>
+
+    <div class="glass unfollow-panel" id="unfollowPanel" hidden>
+      <h3>Review before unfollowing</h3>
+      <p class="unfollow-warning">
+        ⚠️ This permanently unfollows the accounts you select, one by one, directly on GitHub.
+        It can't be undone in bulk, you'd have to re-follow each one manually. Requires a token
+        with the <strong>user:follow</strong> scope, authorized as the same account you're checking.
+      </p>
+      <div class="unfollow-controls">
+        <label class="select-all-label">
+          <input type="checkbox" id="selectAllCheckbox" checked> Select all
+        </label>
+        <span id="unfollowSelectedCount"></span>
+      </div>
+      <div class="unfollow-list" id="unfollowList"></div>
+      <div class="gate-actions">
+        <button class="btn btn-danger" id="confirmUnfollowBtn">Unfollow selected</button>
+        <button class="btn btn-secondary" id="cancelUnfollowBtn">Cancel</button>
+      </div>
+      <div class="status-line" id="unfollowStatus" role="status" aria-live="polite"></div>
+    </div>
   </section>
 
   <footer>
-    <p>Made by <a href="https://github.com/zuni-developer" target="_blank" rel="noopener noreferrer">Zuni-Developer</a>
+    Built by <a href="https://github.com/zuni-developer" target="_blank" rel="noopener noreferrer">zuni-developer</a>.
   </footer>
 </div>
 

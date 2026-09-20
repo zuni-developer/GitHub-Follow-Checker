@@ -1,72 +1,63 @@
 # Contributing to GitHub Follow Checker
 
-Thanks for considering a contribution — this is a small, dependency-free static project, so
-getting set up takes about a minute.
+This project does not accept pull requests. All code changes are made by the maintainer only.
+That's a deliberate choice, not a lack of gratitude:
 
-## Ground rules
+- It's a small, security-sensitive, dependency-free static app (see
+  [Security-sensitive areas](#security-sensitive-areas) below) — the whole point is that anyone
+  can open `index.html`, read it top to bottom, and trust it. Keeping a single author keeps that
+  guarantee simple to reason about.
+- It keeps review load manageable for a one-person project.
 
-- Be respectful. See the [Code of Conduct](CODE_OF_CONDUCT.md).
-- No build step, no framework, no runtime dependencies. Keep it that way unless there's a strong
-  reason not to — the whole point of this project is that anyone can open `index.html`, read it
-  top to bottom, and trust it.
-- Anything that touches the token field, the star-check, or how data is fetched/stored needs extra
-  care — see the [Security](#security-sensitive-changes) note below.
+You're still very welcome to help by reporting bugs and requesting features — that's the most
+useful contribution you can make here, and it's genuinely wanted.
 
-## Getting set up
+## How to help
 
-```bash
-git clone https://github.com/YOUR_USERNAME/github-follow-checker.git
-cd github-follow-checker
-npm run dev   # or: python3 -m http.server 5173
-```
+- **Found a bug?** [Open an issue](../../issues/new/choose) using the Bug Report template.
+- **Have an idea or a feature request?** [Open an issue](../../issues/new/choose) using the
+  Feature Request template.
+- **Found an actual security vulnerability?** Don't open a public issue — see
+  [SECURITY.md](SECURITY.md) for how to report it privately.
+- Please be respectful — see the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-Open the printed local URL. Edits to `index.html`, `assets/css/styles.css`, or `assets/js/app.js`
-just need a browser refresh — no build/watch process.
+Pull requests, forks submitted as PRs, and unsolicited patches will be closed without review. If
+you fork the project to make your own changes for yourself, that's fine and welcome under the
+[license](LICENSE) — just know it won't be merged back here.
+
+## Writing a good issue
+
+A good bug report or feature request gets acted on much faster. Please include:
+
+- What you expected to happen vs. what actually happened
+- Steps to reproduce (for bugs), including the browser/engine used
+- Whether the issue happens with an unauthenticated check, a rate-limit token, or the unfollow
+  flow (see [Security-sensitive areas](#security-sensitive-areas) — problems here get priority)
+- Console errors, if any (F12 → Console)
 
 ## Project structure
+
+For context, in case it helps you describe *where* something is going wrong:
 
 ```
 index.html              markup only
 assets/css/styles.css   all styling, theme tokens as CSS custom properties
-assets/js/app.js         all logic, plain JS, one IIFE, no globals leaked
+assets/js/app.js        all logic, plain JS, one IIFE, no globals leaked
 ```
 
-## Making a change
+## Security-sensitive areas
 
-1. Fork the repo and create a branch off `main`: `git checkout -b fix/short-description`.
-2. Make your change. Keep commits focused — one logical change per commit.
-3. Test manually in a real browser against a real GitHub username (see
-   [Manual test checklist](#manual-test-checklist) below).
-4. Open a pull request using the provided template. Explain *what* changed and *why*, and note
-   which manual tests you ran.
+This project's trust model is: *no credentials are collected by default, and any token that is
+collected (reactively for rate limits, or for the unfollow feature) lives only in memory for that
+session, is verified against the account being acted on where relevant, and never triggers a
+write action without explicit per-item confirmation.* Issues touching any of the following get
+priority:
 
-## Manual test checklist
-
-There's no automated test suite yet (contributions welcome!). Before opening a PR, please verify
-in at least one Chromium-based browser and one other engine (Firefox/Safari) if the change touches
-JS or CSS:
-
-- [ ] Entering a username that **hasn't** starred the repo shows the star-gate, and "check again"
-      re-verifies correctly
-- [ ] Entering a username that **has** starred it goes straight to results
-- [ ] Entering a nonexistent username shows a clear "not found" message, not a crash
-- [ ] Filter chips (Not following back / Fans / Mutual), search, sort, and CSV export all work
-- [ ] Light/dark toggle works, and reflects OS preference on first load
-- [ ] Keyboard-only navigation reaches every interactive element with visible focus states
-- [ ] No errors in the browser console under normal use
-
-## Security-sensitive changes
-
-This project's entire trust model rests on: *nothing typed into this page ever leaves the
-visitor's browser except direct calls to `api.github.com`.* If your change touches:
-
-- the token input or how it's used,
+- how or when a token is requested, stored, or attached to requests,
+- the identity-verification check before unfollowing,
+- the confirm/preview step before any write action,
 - `localStorage`/`sessionStorage` usage,
-- any new network call or third-party script/resource,
+- any new or unexpected network call or third-party script/resource.
 
-please call this out explicitly in your PR description. See [SECURITY.md](SECURITY.md) for how to
-report an actual vulnerability privately instead of in a public issue.
-
-## Reporting bugs / requesting features
-
-Please use the issue templates — they ask for just enough detail to act on the report quickly.
+Again, an actual exploitable vulnerability should go to [SECURITY.md](SECURITY.md), not a public
+issue.

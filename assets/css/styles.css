@@ -79,8 +79,14 @@
     font-family:var(--font-mono);
   }
   .pill .dot{width:6px; height:6px; border-radius:50%; background:var(--teal); flex-shrink:0;}
-  .pill.warn .dot{background:var(--coral);}
   .pill.hidden{display:none;}
+  .auth-pill{color:var(--ink); gap:8px;}
+  .auth-pill .dot{background:var(--amber);}
+  .auth-pill button{
+    background:none; border:none; color:var(--ink-soft); cursor:pointer; font-size:1rem;
+    line-height:1; padding:0 0 0 2px;
+  }
+  .auth-pill button:hover{color:var(--coral);}
 
   .theme-toggle{
     display:flex; align-items:center; gap:8px;
@@ -119,15 +125,6 @@
   .field input.invalid{border-color:var(--coral);}
   .field-error{font-size:.78rem; color:var(--coral); margin-top:6px; min-height:1em;}
 
-  .advanced{margin-bottom:16px;}
-  .advanced summary{cursor:pointer; font-size:.85rem; color:var(--ink-soft); list-style:none; display:flex; align-items:center; gap:6px;}
-  .advanced summary::-webkit-details-marker{display:none;}
-  .advanced summary:before{content:"›"; display:inline-block; transition:transform .2s; font-size:1.1rem;}
-  .advanced[open] summary:before{transform:rotate(90deg);}
-  .advanced .field{margin-top:12px;}
-  .token-help{font-size:.78rem; color:var(--ink-soft); line-height:1.5; margin-top:6px;}
-  .token-help a{color:var(--sky);}
-
   .btn{
     width:100%; padding:13px 18px; border:none; border-radius:var(--radius-sm);
     background:var(--amber); color:#1B2130; font-family:var(--font-body); font-weight:600;
@@ -145,6 +142,12 @@
 
   .status-line{min-height:20px; font-size:.85rem; color:var(--ink-soft); margin-top:12px; text-align:center;}
   .status-line.error{color:var(--coral);}
+  .token-note{font-size:.78rem; color:var(--ink-soft); line-height:1.5; margin:10px 0 0; text-align:center;}
+  .token-note a{color:var(--sky);}
+
+  .token-prompt{max-width:520px; margin:20px auto 0; padding:26px; text-align:left; animation:fadeIn .3s ease;}
+  .token-prompt h3{font-family:var(--font-display); margin:0 0 8px; font-size:1.1rem;}
+  .token-prompt > p{color:var(--ink-soft); font-size:.88rem; line-height:1.5; margin:0 0 16px;}
 
   .gate{max-width:560px; margin:28px auto 0; padding:26px; text-align:center; display:none;}
   .gate.show{display:block; animation:fadeIn .3s ease;}
@@ -190,6 +193,38 @@
   .toolbar-row2{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;}
   .result-count{font-size:.8rem; color:var(--ink-soft);}
   .toolbar-actions{display:flex; gap:8px;}
+
+  .truncation-note{
+    font-size:.8rem; color:var(--ink-soft); background:var(--glass-strong); border:1px solid var(--glass-border);
+    border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:16px; text-align:center;
+  }
+
+  .btn-danger{background:var(--coral); color:#fff;}
+  .btn-danger:hover:not(:disabled){box-shadow:0 6px 20px rgba(198,69,61,.35); transform:translateY(-1px);}
+
+  .unfollow-banner{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    padding:14px 18px; margin-bottom:16px; font-size:.9rem;
+  }
+  .unfollow-banner .btn-icon{padding:9px 16px;}
+
+  .unfollow-panel{max-width:640px; margin:24px auto 0; padding:26px; text-align:left; animation:fadeIn .3s ease;}
+  .unfollow-panel h3{font-family:var(--font-display); margin:0 0 10px; font-size:1.15rem;}
+  .unfollow-warning{
+    font-size:.85rem; color:var(--ink-soft); line-height:1.55; margin:0 0 18px;
+    background:var(--glass-strong); border-radius:var(--radius-sm); padding:12px 14px;
+  }
+  .unfollow-controls{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; font-size:.85rem; color:var(--ink-soft);}
+  .select-all-label{display:flex; align-items:center; gap:8px; cursor:pointer;}
+  .unfollow-list{max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-bottom:18px; padding-right:4px;}
+  .unfollow-row{
+    display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:var(--radius-sm);
+    background:var(--glass-strong);
+  }
+  .unfollow-row img{width:32px; height:32px; border-radius:50%; flex-shrink:0;}
+  .unfollow-row .uname{font-family:var(--font-mono); font-size:.85rem; word-break:break-all;}
+  .unfollow-row.done{opacity:.5;}
+  .unfollow-row.failed{outline:1px solid var(--coral);}
 
   .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:12px;}
   .user-card{
